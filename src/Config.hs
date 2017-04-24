@@ -38,6 +38,9 @@ import Plugins.EWMH
 import Plugins.Kbd
 import Plugins.Locks
 
+import Plugins.GetIP
+import Plugins.TIL
+
 import Plugins.Mail
 import Plugins.MBox
 
@@ -149,6 +152,6 @@ infixr :*:
 -- this function's type signature.
 runnableTypes :: Command :*: Monitors :*: Date :*: PipeReader :*: BufferedPipeReader :*: CommandReader :*: StdinReader :*: XMonadLog :*: EWMH :*: Kbd :*: Locks :*:
                  Mail :*: MBox :*:
-                 DateZone :*: MarqueePipeReader :*:
+                 DateZone :*: MarqueePipeReader :*: GetIP :*: TIL :*:
                  ()
 runnableTypes = undefined
