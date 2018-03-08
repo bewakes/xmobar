@@ -107,7 +107,9 @@ executable xmobar
       Plugins.Monitors.ThermalZone, Plugins.Monitors.Top,
       Plugins.Monitors.Uptime, Plugins.Monitors.Weather,
       Plugins.Monitors.Bright, Plugins.Monitors.CatInt,
-      Plugins.Monitors.UVMeter
+      Plugins.Monitors.UVMeter,
+      Plugins.DateZone, Plugins.GetIP,
+      Plugins.MBox, Plugins.Mail, Plugins.TIL
 
     ghc-options: -funbox-strict-fields -Wall -fno-warn-unused-do-bind
     extra-libraries: Xrandr Xrender

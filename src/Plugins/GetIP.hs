@@ -1,6 +1,11 @@
 {-# LANGUAGE CPP #-}
 
-module Plugins.GetIP(GetIP(..)) where
+module Plugins.GetIP(
+      GetIP(..)
+    , getCommandOutput
+    , getIP
+    , getSSID
+) where
 
 import Plugins
 import System.Process
@@ -9,9 +14,12 @@ import System.Process
 --
 ifconfig int = getCommandOutput "ifconfig" [int] ""
 --grepInet pat = getCommandOutput "grep" ["inet "] pat
-grepIP pat = getCommandOutput "grep" ["-Eo", "[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+"] pat
---cut ip = getCommandOutput "cut" ["-d:", "-f2"] ip
---awk ip = getCommandOutput "awk" ["{print $1}"] ip
+grepIP = getCommandOutput "grep" ["-Eo", "[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+"]
+
+-- COMMANDS
+nmcli_cmd = "nmcli d wifi"
+grep_cmd patt = getCommandOutput "grep" [] patt
+command_wifi_ssid = "nmcli d wifi | grep \\* | sed 's/ \\+/$/g' | cut -d '$' -f 2"
 
 getCommandOutput :: String -> [String] -> String -> IO String
 getCommandOutput cmd args stin = do
@@ -24,6 +32,15 @@ getInterface i = do
     int <- return $ head $ filter (\x-> head x == i) $ words op
     return int
 
+getSSID :: IO String
+getSSID = do
+    op <- getCommandOutput "iwgetid" ["-r"] ""
+    return op
+    {-grepped <- getCommandOutput "grep" ["\\*"] op-}
+    {-sedded <- getCommandOutput "sed" ["s/ \\+/$/g"] grepped-}
+    {-cut <- getCommandOutput "cut" ["-d", "$", "-f", "2"] sedded-}
+    {-return cut -}
+
 extractIp :: [String] -> String
 extractIp [] = ""
 extractIp (x:xs) = x
@@ -32,9 +49,8 @@ getIP i = do
     int <- getInterface i
     a <- ifconfig int
     b <- grepIP a
-    --c <- cut b
-    --d <- awk c
-    return $ extractIp $ words b
+    name <- if i == 'w' then getSSID else return ""
+    return $ extractIp (words b) ++ "(" ++ take (length name - 1) name ++ ")"
 
 data GetIP = GetIP String String Int
     deriving (Read, Show)
