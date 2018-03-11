@@ -151,8 +151,11 @@ executable xmobar
       Plugins.Monitors.MultiCpu, Plugins.Monitors.Net,
       Plugins.Monitors.Swap, Plugins.Monitors.Thermal,
       Plugins.Monitors.ThermalZone, Plugins.Monitors.Top,
-      Plugins.Monitors.Uptime,
-      Plugins.Monitors.Bright, Plugins.Monitors.CatInt
+      Plugins.Monitors.Uptime, Plugins.Monitors.Weather,
+      Plugins.Monitors.Bright, Plugins.Monitors.CatInt,
+      Plugins.Monitors.UVMeter,
+      Plugins.DateZone, Plugins.GetIP,
+      Plugins.MBox, Plugins.Mail, Plugins.TIL
 
     ghc-options: -funbox-strict-fields -Wall -fno-warn-unused-do-bind
     extra-libraries: Xrandr Xrender
@@ -170,6 +173,8 @@ executable xmobar
       filepath,
       transformers,
       X11 >= 1.6.1,
+      split,
+      http-conduit,
       mtl >= 2.1 && < 2.3,
       parsec == 3.1.*,
       stm >= 2.3 && < 2.5
